@@ -1,8 +1,10 @@
 const express = require('express');
 const UserSchema = require('../models/user.model');
 
+// import generateToken function
 const generateToken = require('../utils/generateToken');
 
+// for registration
 const registerController = async (req, res) => {
     const { fullname, email, password } = req.body;
 
@@ -24,7 +26,6 @@ const registerController = async (req, res) => {
             _id : user._id,
             fullname : user.fullname,
             email : user.email,
-            password : user.password,
             role : user.role,
             token : generateToken(user._id),
         });
@@ -37,6 +38,7 @@ const registerController = async (req, res) => {
     
 }
 
+// for login
 const loginController = async (req, res) => {
     const { email, password } = req.body;
     
