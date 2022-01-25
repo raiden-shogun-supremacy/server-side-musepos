@@ -1,32 +1,32 @@
 const express = require('express');
-const UserSchema = require('../models/user.model');
+const User = require('../models/user.model');
 
 // import generateToken function
 const generateToken = require('../utils/generateToken');
 
 // for registration
 const registerController = async (req, res) => {
-    const { fullname, email, password } = req.body;
+    const { name, username, password } = req.body;
 
-    const userExists = await UserSchema.findOne({ email });
+    const userExists = await User.findOne({ username });
     
     if(userExists){
         res.status(400);
         throw new Error("User already exists!");
     }
 
-    const user = await UserSchema.create({
-        fullname,
-        email,
+    const user = await User.create({
+        name,
+        username,
         password
     });
     
     if(user) {
         res.status(201).json({
             _id : user._id,
-            fullname : user.fullname,
-            email : user.email,
-            role : user.role,
+            name : user.name,
+            username : user.username,
+            shopParticipate : user.shopParticipate,
             token : generateToken(user._id),
         });
     } else {
@@ -40,21 +40,24 @@ const registerController = async (req, res) => {
 
 // for login
 const loginController = async (req, res) => {
-    const { email, password } = req.body;
+    const { username, password } = req.body;
     
-    const user = await UserSchema.findOne({ email });
+    const user = await User.findOne({ username });
     
     if(user && user.matchPassword(password)){
         res.json({
             _id : user._id,
-            email : user.email,
-            role : user.role,
+            username : user.username,
+            shopParticipate : user.shopParticipate,
             token : generateToken(user._id),
         });
     } else {
         res.status(400);
-        throw new Error("Invalid email or password!");
+        throw new Error("Invalid username or password!");
     }
 }
 
-module.exports = { registerController, loginController };
+module.exports = { 
+    registerController, 
+    loginController 
+};

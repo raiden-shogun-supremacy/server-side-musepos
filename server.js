@@ -7,8 +7,11 @@ dotenv.config();
 const app = express();
 connectDB();
 
-// Import routes
+/* 
+    Import routes 
+*/
 const userRoutes = require('./routes/user.route');
+const shopRoutes = require('./routes/shop.route');
 
 // Configuration
 app.use(express.json());
@@ -20,6 +23,7 @@ app.get('/', (req, res) => {
 
 // Using routes
 app.use('/api/user/', userRoutes);
+app.use('/api/shop/', shopRoutes);
 
 // Assign server's port
 const PORT = process.env.PORT || 5000;

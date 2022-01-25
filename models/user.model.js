@@ -3,11 +3,11 @@ const Schema = mongoose.Schema;
 const bcrypt = require('bcrypt');
 
 const UserSchema = new Schema({
-    fullname : {
+    name : {
         type : String,
         required : true,
     },
-    email : {
+    username : {
         type : String,
         required : true,
         unique : true,
@@ -16,11 +16,12 @@ const UserSchema = new Schema({
         type : String,
         required : true,
     },
-    role : {
-        type : String,
-        required : true,
-        default : 'user'
-    }
+    shopParticipate : [
+        {
+            type : mongoose.Schema.Types.ObjectId,
+            ref : 'shop',
+        }
+    ]
 },{
     timestamps : true,
 });
@@ -41,4 +42,4 @@ UserSchema.methods.matchPassword = async function(enteredPassword) {
     return await bcrypt.compare(enteredPassword, this.password);
 };
 
-module.exports = mongoose.model('user', UserSchema);
+module.exports = User = mongoose.model('user', UserSchema);

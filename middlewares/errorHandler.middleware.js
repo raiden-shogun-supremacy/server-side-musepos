@@ -18,7 +18,7 @@ const errorHandler = (err, req, res, next) => {
 	res.status(statusCode);
 	res.json({
 		// the error we created will be thrown and display through this.
-		statue : res.statusCode,
+		status : res.statusCode,
 		message : err.message
 	});
 }

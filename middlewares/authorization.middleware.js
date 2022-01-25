@@ -17,7 +17,9 @@ const protect = async (req, res, next) => {
 
             // get all of data except the password attribute
             req.user = await UserSchema.findById(decodedToken.id).select("-password");
-        
+
+            next();
+
         } catch (err) {
             res.status(401);
             throw new Error("Not authorized, token failed"); // something wrong with token
