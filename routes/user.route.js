@@ -5,8 +5,10 @@ const router = express.Router();
 const { registerController,
         loginController } = require('../controllers/user.controller');
 
-// Routes
+// registration
 router.route('/register').post(registerController);
+
+// authentication
 router.route('/login').post(loginController);
 
 
