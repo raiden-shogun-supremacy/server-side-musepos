@@ -1,6 +1,6 @@
 const express = require('express');
 const Shop = require('../models/shop.model');
-
+const User = require('../models/user.model');
 // get all shop
 const getAllShop = async (req, res) => {
     // find all shop in shop collections
@@ -55,6 +55,17 @@ const createShop = async (req, res) => {
         owner : owner,
     });
 
+    const obj = newShop._id;
+    User.findOneAndUpdate({ _id: owner }, 
+    { $push: { shopParticipate : obj  } },function (error, success) {
+        if (error) {
+            console.log(error);
+        } else {
+            console.log(success);
+        }
+    });
+    
+
     if(newShop) {
         res.status(201).json({
             newShop
@@ -65,6 +76,7 @@ const createShop = async (req, res) => {
     }
 };
 
+
 // edit shop's information
 const editShop = async (req, res) => {
     const { shopName } = req.body;
@@ -74,6 +86,7 @@ const editShop = async (req, res) => {
         res.status(401);
         throw new Error("You do not have a permission to edit an info!");
     }
+
 
     if(shop){
         shop.shopName = shopName;

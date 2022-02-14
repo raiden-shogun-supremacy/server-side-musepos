@@ -26,8 +26,10 @@ const UserSchema = new Schema({
     timestamps : true,
 });
 
+
 // Hashing password
 UserSchema.pre('save', async function(next) {
+
 
     if(!this.isModified("password")){
         next();

@@ -24,7 +24,7 @@ const ShopSchema = new Schema({
     ],
     stock : {
         type : mongoose.Schema.Types.ObjectId,
-        ref : 'stock',
+        ref : 'user',
     },
 
 });
