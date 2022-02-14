@@ -31,7 +31,7 @@ const deleteStock  = (req , res) => {
 const editQuantity = async (req , res) => {
     var newQuantity = req.body.quantity ; 
     var id = req.params.id ; 
-    ProductStockSchema.updateOne(myquery, newvalues, function(err, doc) {
+    stockSchema.updateOne(myquery, newvalues, function(err, doc) {
         if (err) throw err;
         console.log("1 document updated" , doc );
       });
@@ -40,7 +40,7 @@ const editQuantity = async (req , res) => {
 const showByCategory =  async (req , res) => {
     
     const type = req.body.category
-    const category = await ProductStockSchema.find(
+    const category = await stockSchema.find(
      {category : type} 
     )
     res.send(category)
