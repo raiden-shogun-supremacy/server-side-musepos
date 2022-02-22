@@ -55,6 +55,7 @@ const createShop = async (req, res) => {
         owner : owner,
     });
 
+    //add shop to shopParticipate
     const obj = newShop._id;
     User.findOneAndUpdate({ _id: owner }, 
     { $push: { shopParticipate : obj  } },function (error, success) {

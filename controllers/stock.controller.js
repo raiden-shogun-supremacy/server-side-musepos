@@ -1,10 +1,11 @@
 const express = require('express');
 const stockSchema = require('../models/stock.model');
 //const UserSchema = require('../models/user.model');
-
+const menuSchema = require('../models/menu.model');
+const Shop = require('../models/shop.model');
 
 const addStock = async (req , res ) => {
-    const { shop , menu } = req.body
+    const { shop , menu , stockamount , stockstatus } = req.body
 
     const stock = await stockSchema.create({
         parentshop : shop ,
@@ -16,8 +17,8 @@ const addStock = async (req , res ) => {
 
 const deleteStock  = (req , res) => {
     var stock = req.params.id 
-    console.log(product)
-    stockSchema.find(({id : {$stock : stock}}) , function (err , arr) {
+
+    stockSchema.findOneAndRemove(({id : {$stock : stock}}) , function (err , arr) {
         if (err){
             console.log(err)
         }
@@ -39,17 +40,18 @@ const editQuantity = async (req , res) => {
 
 const showByCategory =  async (req , res) => {
     
-    const type = req.body.category
+    const type = req.body.params
     const category = await stockSchema.find(
      {category : type} 
     )
-    res.send(category)
+    res.json(category)
     console.log(category)
    
 }
 
 const showAllStock = async (req , res) => {
-
+    const stock = await stockSchema.find({})
+    res.json(stock)
 }
 
 

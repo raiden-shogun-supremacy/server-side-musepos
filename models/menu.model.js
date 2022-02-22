@@ -7,18 +7,22 @@ const MenuSchema = new Schema({
         type : String ,
         required : true 
     } ,
+
     priceUnit : {
         type : Number ,
         required : true 
     } ,
+
     imgUrl : {
         type : String , 
         required : true 
     } ,
-    stockAmount : {
-        type : Number , 
-        required : true 
-    } , 
+    
+    menuCategory : {
+        type : String ,
+        require : true
+    } ,
+
     parentStock : {
         type : Schema.Types.ObjectId ,
         ref : 'stock' ,
@@ -26,5 +30,5 @@ const MenuSchema = new Schema({
 
 });
 
-module.exports = Menu= mongoose.model('menu', MenuSchema);
+module.exports = Menu = mongoose.model('menu', MenuSchema);
 

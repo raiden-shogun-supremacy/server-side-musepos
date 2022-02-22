@@ -8,6 +8,16 @@ const StockSchema = new Schema({
             ref : 'menu',
         }
     ],
+
+    stockAmount : {
+        type : Number , 
+        required : true 
+    } , 
+
+    stockStatus : {
+        type : String ,
+        require : true ,
+    } ,
     parentShop : {
         type : mongoose.Schema.Types.ObjectId,
         ref : 'shop'

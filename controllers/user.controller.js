@@ -55,6 +55,7 @@ const loginController = async (req, res) => {
             username : user.username,
             token : generateToken(user._id),
         });
+        
     } else {
         res.status(400);
         throw new Error("Invalid username or password!");
