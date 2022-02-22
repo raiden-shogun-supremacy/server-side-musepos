@@ -44,16 +44,17 @@ const loginController = async (req, res) => {
     
     const user = await User.findOne({ username });
     
-    if(user && user.matchPassword(password)){
+    if(user && await user.matchPassword(password)){
         res.json({
             _id : user._id,
             username : user.username,
             token : generateToken(user._id),
         });
-    } else {
-        res.status(400);
-        throw new Error("Invalid username or password!");
-    }
+    }  
+
+    res.status(400);
+    throw new Error("Invalid username or password!");
+    
 }
 
 module.exports = { 
