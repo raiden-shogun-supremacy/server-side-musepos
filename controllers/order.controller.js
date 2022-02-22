@@ -5,14 +5,16 @@ const Order = require('../models/order.model');
 
 const newOrder = async (req, res) => {
 
-    const { shop , menu , amtPeople , typeOfAct } = req.body;
+    const { parentShop , orderList , amtPeople ,
+        typeOfAct , totalPay , orderStatus } = req.body;
 
     const newOrder = await Order.create({
-        parentShop : shop,
-        menu : menu,
+        parentShop : parentShop,
+        orderList : orderList,
         amtPeople : amtPeople,
-        typeOfAct :typeOfAct
-        
+        typeOfAct : typeOfAct,
+        totalPay : totalPay,
+        orderStatus : orderStatus
     });
 
     res.status(201).json({newOrder})
@@ -41,7 +43,7 @@ const deleteOrder = async (req, res) => {
     }
 }
 
-const showAllOrder = async (res) =>{
+const showAllOrder = async (req, res) =>{
     const Allorder = await Order.find({$all: Order});
     res.send(Allorder)
 }

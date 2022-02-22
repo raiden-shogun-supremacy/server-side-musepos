@@ -11,6 +11,6 @@ const { getCurrentOrder } = require('../controllers/order.controller');
 router.route('/neworder').post(newOrder, protect);
 router.route('/delete-order/:id').delete(deleteOrder);
 router.route('/show-all-order').get(showAllOrder, protect);
-router.route('/order/:id').get(getCurrentOrder);
+router.route('/order-now/:id').get(getCurrentOrder);
 
 module.exports = router;

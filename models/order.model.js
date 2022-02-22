@@ -4,8 +4,22 @@ const Schema = mongoose.Schema;
 const orderSchema = new Schema({
     orderList : [
         {
-            type : mongoose.Schema.Types.ObjectId,
-            ref : 'menu',
+            menuID : {
+                type : mongoose.Schema.Types.ObjectId,
+                ref : 'menu',
+            }
+        },
+        {
+            menuName : {
+                type : String,
+                require : true
+            }
+        },
+        {
+            orderAmount : {
+                type : Number,
+                require : true
+            }
         }
     ],
     parentShop : {
@@ -20,6 +34,14 @@ const orderSchema = new Schema({
         type : String ,
         required : true 
     },
+    totalPay : {
+        type : Number,
+        require : true
+    },
+    orderStatus : {
+        type : String,
+        require : true
+    }
     
 },{
     timestamps : true,
