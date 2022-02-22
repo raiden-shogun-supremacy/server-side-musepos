@@ -29,14 +29,19 @@ const registerController = async (req, res) => {
             shopParticipate : user.shopParticipate,
             token : generateToken(user._id),
         });
+        
     } else {
         res.status(400).json({
             status : 400,
             message : err.message,
         });
+
     }
-    
+
+    console.log(user) ;
+
 }
+
 
 // for login
 const loginController = async (req, res) => {

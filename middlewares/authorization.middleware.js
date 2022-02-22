@@ -20,8 +20,10 @@ const protect = async (req, res, next) => {
 
             next();
 
+            
         } catch (err) {
             res.status(401);
+
             throw new Error("Not authorized, token failed"); // something wrong with token
         }
     }
@@ -32,5 +34,7 @@ const protect = async (req, res, next) => {
         throw new Error("Not authorized, no token");
     }
 }
+
+
 
 module.exports = protect;
