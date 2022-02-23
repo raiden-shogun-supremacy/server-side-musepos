@@ -2,29 +2,24 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const MenuSchema = new Schema({
-
     menuName : {
-        type : String ,
+        type : String,
         required : true 
-    } ,
+    },
     priceUnit : {
-        type : Number ,
+        type : Number,
         required : true 
-    } ,
+    },
     imgUrl : {
-        type : String , 
+        type : String, 
         required : true 
-    } ,
-    stockAmount : {
-        type : Number , 
-        required : true 
-    } , 
+    },
     parentStock : {
-        type : Schema.Types.ObjectId ,
-        ref : 'stock' ,
+        type : mongoose.Schema.Types.ObjectId,
+        ref : 'stock',
     }
 
 });
 
-module.exports = Menu= mongoose.model('menu', MenuSchema);
+module.exports = Menu = mongoose.model('menu', MenuSchema);
 

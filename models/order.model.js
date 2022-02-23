@@ -12,13 +12,13 @@ const orderSchema = new Schema({
         {
             menuName : {
                 type : String,
-                require : true
+                required : true
             }
         },
         {
             orderAmount : {
                 type : Number,
-                require : true
+                required : true
             }
         }
     ],
@@ -36,11 +36,11 @@ const orderSchema = new Schema({
     },
     totalPay : {
         type : Number,
-        require : true
+        required : true
     },
     orderStatus : {
         type : String,
-        require : true
+        required : true
     }
     
 },{

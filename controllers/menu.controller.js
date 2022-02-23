@@ -11,7 +11,7 @@ const showAllMenu = async (req , res) => {
 }
 
 const addMenu = async (req , res ) => {
-    const {menuName , priceUnit , imgUrl ,stockAmount, parentStock} = req.body
+    const { menuName , priceUnit , imgUrl ,stockAmount, parentStock } = req.body
 
     const menu = await  menuSchema.create({
         menuName : menuName ,

@@ -26,6 +26,12 @@ const ShopSchema = new Schema({
         type : mongoose.Schema.Types.ObjectId,
         ref : 'user',
     },
+    order : [
+        {
+            type : mongoose.Schema.Types.ObjectId,
+            ref : 'order',
+        }
+    ]
 
 });
 
