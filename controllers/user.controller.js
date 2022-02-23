@@ -1,11 +1,12 @@
 const express = require('express');
+const asyncHandler = require('express-async-handler');
 const User = require('../models/user.model');
 
 // import generateToken function
 const generateToken = require('../utils/generateToken');
 
 // for registration
-const registerController = async (req, res) => {
+const registerController = asyncHandler(async (req, res) => {
     const { name, username, password } = req.body;
 
     const userExists = await User.findOne({ username });
@@ -40,11 +41,11 @@ const registerController = async (req, res) => {
 
     console.log(user) ;
 
-}
+});
 
 
 // for login
-const loginController = async (req, res) => {
+const loginController = asyncHandler(async (req, res) => {
     const { username, password } = req.body;
     
     const user = await User.findOne({ username });
@@ -60,7 +61,7 @@ const loginController = async (req, res) => {
         res.status(400);
         throw new Error("Invalid username or password!");
     }
-}
+});
 
 module.exports = { 
     registerController, 

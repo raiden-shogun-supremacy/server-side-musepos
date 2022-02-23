@@ -1,5 +1,4 @@
 const express = require('express');
-const asyncHandler = require('express-async-handler');
 const dotenv = require('dotenv');
 const connectDB = require('./config/connectDB');
 
