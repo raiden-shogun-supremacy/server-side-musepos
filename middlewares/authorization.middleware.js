@@ -13,7 +13,7 @@ const protect = async (req, res, next) => {
 
             // verify token by checking token with secret message
             // Token only contains id because we assign it to do only this in utils/generateToken.js
-            const decodedToken = jwt.verify(token, MusePOS);
+            const decodedToken = jwt.verify(token, "MusePOS");
 
             // get all of data except the password attribute
             req.user = await UserSchema.findById(decodedToken.id).select("-password");
