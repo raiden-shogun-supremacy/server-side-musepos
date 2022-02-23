@@ -7,15 +7,11 @@ const orderSchema = new Schema({
             menuID : {
                 type : mongoose.Schema.Types.ObjectId,
                 ref : 'menu',
-            }
-        },
-        {
+            },
             menuName : {
                 type : String,
                 required : true
-            }
-        },
-        {
+            },
             orderAmount : {
                 type : Number,
                 required : true
