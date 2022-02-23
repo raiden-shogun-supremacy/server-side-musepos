@@ -1,5 +1,6 @@
 const express = require('express');
 const dotenv = require('dotenv');
+const cors = require('cors');
 const connectDB = require('./config/connectDB');
 
 // Invoke dependencies
@@ -12,12 +13,12 @@ connectDB();
 */
 const userRoutes = require('./routes/user.route');
 const shopRoutes = require('./routes/shop.route');
-const stockRoute = require('./routes/stock.route');
-const menuRoute = require('./routes/menu.route');
-const OrderRoute = require('./routes/order.route');
+const menuRoutes = require('./routes/menu.route');
+const orderRoutes = require('./routes/order.route');
 
 // Configuration
 app.use(express.json());
+app.use(cors())
 
 // Generate view at main directory
 app.get('/', (req, res) => {
@@ -27,9 +28,8 @@ app.get('/', (req, res) => {
 // Using routes
 app.use('/api/user/', userRoutes);
 app.use('/api/shop/', shopRoutes);
-app.use('/api/stock/', stockRoute);
-app.use('/api/menu/', menuRoute);
-app.use('/api/order/', OrderRoute);
+app.use('/api/menu/', menuRoutes);
+app.use('/api/order/', orderRoutes);
 
 // Assign server's port
 const PORT = process.env.PORT || 5000;

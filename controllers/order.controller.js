@@ -2,11 +2,13 @@ const express = require('express');
 const Order = require('../models/order.model');
 
 
-
 const newOrder = async (req, res) => {
-
-    const { parentShop , orderList , amtPeople ,
-        typeOfAct , totalPay , orderStatus } = req.body;
+    const { parentShop, 
+            orderList,
+            amtPeople,
+            typeOfAct,
+            totalPay,
+            orderStatus } = req.body;
 
     const newOrder = await Order.create({
         parentShop : parentShop,
@@ -24,7 +26,7 @@ const getCurrentOrder = async (req, res) => {
     const currentOrder = await Order.findById(req.params.id);
 
     if(currentOrder) {
-        res.send(currentOrder);
+        res.json(currentOrder);
     } else {
         res.status(404).send("Not found");
     }
