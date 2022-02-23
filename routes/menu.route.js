@@ -6,7 +6,7 @@ const protect = require('../middlewares/authorization.middleware');
 
 // imports routes
 
-const {  showByCategory , showAllMenu , addMenu , deleteMenu , showByone
+const { showAllMenu , showByone, deleteMenu ,addMenu , showByCategory
 } = require('../controllers/menu.controller');
 
 router.route('/showallmenu').get(showAllMenu , protect);
@@ -17,5 +17,6 @@ router.route('/delete-menu/:id').delete(deleteMenu , protect)
 
 router.route('/show-byone/:id').get(showByone , protect) ;
 
+router.route('/showbycategory/:category').get(showByCategory, protect) ;
 
 module.exports = router;

@@ -6,10 +6,12 @@ const Shop = require('../models/shop.model');
 
 const addStock = async (req , res ) => {
     const { shop , menu , stockamount , stockstatus } = req.body
-
+    
     const stock = await stockSchema.create({
         parentshop : shop ,
-        menu : menu
+        menu : menu ,
+        stockAmount : stockamount ,
+        stockstatus : stockstatus 
     })
     res.status(201).json({stock})
 
@@ -41,11 +43,17 @@ const editQuantity = async (req , res) => {
 const showByCategory =  async (req , res) => {
     
     const type = req.body.params
-    const category = await stockSchema.find(
-     {category : type} 
-    )
-    res.json(category)
-    console.log(category)
+    if(type){
+        const category = await stockSchema.find(
+            {category : type} 
+           )
+           res.json(category)
+           console.log(category)
+
+    }else{
+        res.status(400).send("not found category")
+   
+    }
    
 }
 
