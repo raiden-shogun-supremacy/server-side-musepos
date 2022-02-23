@@ -80,7 +80,7 @@ const createShop = asyncHandler(async (req, res) => {
 });
 
 
-// edit shop's information
+// edit shop's information by shopID
 const editShop = asyncHandler(async (req, res) => {
     const { shopName } = req.body;
     const shop = await Shop.findById(req.params.id);
@@ -104,7 +104,8 @@ const editShop = asyncHandler(async (req, res) => {
 
 // delete a shop by id
 const deleteShop = asyncHandler(async (req, res) => {
-    const shop = await Shop.findById(req.params.id);
+    const shopID = req.params.id;
+    const shop = await Shop.findById(shopID);
 
     // if there is no shop
     if(!shop) {
@@ -120,6 +121,9 @@ const deleteShop = asyncHandler(async (req, res) => {
 
     // if there is a shop
     if(shop) {
+        await User.findByIdAndUpdate(req.user._id , 
+            { $pull: { shopParticipate : shopID } }, { new: true, useFindAndModify: false }
+        );
         await shop.remove();
         res.send("Shop removed.");
     } 
