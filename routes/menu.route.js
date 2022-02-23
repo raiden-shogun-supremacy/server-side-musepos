@@ -6,15 +6,27 @@ const protect = require('../middlewares/authorization.middleware');
 
 // imports routes
 
-const {  showByCategory , showAllMenu , addMenu , deleteMenu , showByone
+const {
+    showByCategory, 
+    addMenu, 
+    deleteMenu, 
+    editStockAmount, 
+    getAllMenu
 } = require('../controllers/menu.controller');
 
-router.route('/showallmenu').get(showAllMenu , protect);
+// get all menu by shopID
+router.route('/:shopId').get(protect, getAllMenu);
 
-router.route('/addmenu').post(addMenu , protect);
+// add a new menu
+router.route('/add-menu').post(protect, addMenu);
 
-router.route('/delete-menu/:id').delete(deleteMenu , protect)
+// delete current menu by menuID
+router.route('/delete-menu/:id').delete(protect, deleteMenu);
 
-router.route('/show-byone/:id').get(showByone , protect) ;
+// edit quantity or stock amount by menuID
+router.route('/edit-qty/:id').put(protect, editStockAmount);
+
+// query by filter keyword
+router.route('/menu-type/:keyword').get(protect, showByCategory);
 
 module.exports = router;

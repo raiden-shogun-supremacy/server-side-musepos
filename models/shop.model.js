@@ -22,17 +22,18 @@ const ShopSchema = new Schema({
             ref : 'user',
         }
     ],
-    stock : {
-        type : mongoose.Schema.Types.ObjectId,
-        ref : 'user',
-    },
+    menu : [
+        {
+            type : mongoose.Schema.Types.ObjectId,
+            ref : 'menu',
+        }
+    ],
     order : [
         {
             type : mongoose.Schema.Types.ObjectId,
             ref : 'order',
         }
     ]
-
 });
 
 module.exports  = Shop = mongoose.model('shop', ShopSchema);

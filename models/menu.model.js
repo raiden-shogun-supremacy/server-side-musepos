@@ -5,21 +5,31 @@ const MenuSchema = new Schema({
     menuName : {
         type : String,
         required : true 
-    },
+    } ,
     priceUnit : {
         type : Number,
         required : true 
-    },
+    } ,
     imgUrl : {
-        type : String, 
+        type : String , 
         required : true 
+    } ,
+    menuCategory : {
+        type : String ,
+        require : true
+    } ,
+    stockAmount : {
+        type: Number,
+        required: true,
     },
-    parentStock : {
+    stockStatus: {
+        type: String,
+        required: true,
+    },
+    parentShop : {
         type : mongoose.Schema.Types.ObjectId,
-        ref : 'stock',
+        ref : 'shop'
     }
-
 });
 
-module.exports = Menu = mongoose.model('menu', MenuSchema);
-
+module.exports = Menu = mongoose.model('menu', StockSchema);

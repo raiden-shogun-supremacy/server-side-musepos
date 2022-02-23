@@ -1,10 +1,11 @@
 const express = require('express');
 const Shop = require('../models/shop.model');
 const User = require('../models/user.model');
+
 // get all shop
-const getAllShop = async (req, res) => {
+const getAllShop = asyncHandler(async (req, res) => {
     // find all shop in shop collections
-    // where the owner is from id from token
+    // where the participant is from id from token
     const allShops = await Shop.find({
         $or:[
             { owner : req.user._id },
@@ -13,10 +14,10 @@ const getAllShop = async (req, res) => {
         ]
     });
     res.status(201).json(allShops);
-};
+});
 
 // get current shop
-const getCurrentShop = async (req, res) => {
+const getCurrentShop = asyncHandler(async (req, res) => {
     const currentShop = await Shop.findById(req.params.id).where(
         {
             $or:[
@@ -32,10 +33,10 @@ const getCurrentShop = async (req, res) => {
     } else {
         res.status(404).send("Not found");
     }
-};
+});
 
 // create a new shop
-const createShop = async (req, res) => {
+const createShop = asyncHandler(async (req, res) => {
     const { shopName, owner } = req.body;
     // if user did not provide shop's name
     if (!shopName) {
@@ -55,9 +56,10 @@ const createShop = async (req, res) => {
         owner : owner,
     });
 
+    // add shop to shopParticipate
     const obj = newShop._id;
     User.findOneAndUpdate({ _id: owner }, 
-    { $push: { shopParticipate : obj  } },function (error, success) {
+    { $push: { shopParticipate : obj } },function (error, success) {
         if (error) {
             console.log(error);
         } else {
@@ -74,11 +76,11 @@ const createShop = async (req, res) => {
         res.status(400);
         throw new Error("Cannot create shop.");
     }
-};
+});
 
 
 // edit shop's information
-const editShop = async (req, res) => {
+const editShop = asyncHandler(async (req, res) => {
     const { shopName } = req.body;
     const shop = await Shop.findById(req.params.id);
 
@@ -97,10 +99,10 @@ const editShop = async (req, res) => {
         res.status(400);
         throw new Error("Something wrong with editing");
     }
-}
+});
 
 // delete a shop by id
-const deleteShop = async (req, res) => {
+const deleteShop = asyncHandler(async (req, res) => {
     const shop = await Shop.findById(req.params.id);
 
     // if there is no shop
@@ -121,7 +123,7 @@ const deleteShop = async (req, res) => {
         res.send("Shop removed.");
     } 
 
-};
+});
 
 module.exports = { 
     getAllShop,

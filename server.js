@@ -1,4 +1,5 @@
 const express = require('express');
+const asyncHandler = require('express-async-handler');
 const dotenv = require('dotenv');
 const connectDB = require('./config/connectDB');
 
@@ -12,7 +13,6 @@ connectDB();
 */
 const userRoutes = require('./routes/user.route');
 const shopRoutes = require('./routes/shop.route');
-const stockRoutes = require('./routes/stock.route');
 const menuRoutes = require('./routes/menu.route');
 const orderRoutes = require('./routes/order.route');
 
@@ -27,7 +27,6 @@ app.get('/', (req, res) => {
 // Using routes
 app.use('/api/user/', userRoutes);
 app.use('/api/shop/', shopRoutes);
-app.use('/api/stock/', stockRoutes);
 app.use('/api/menu/', menuRoutes);
 app.use('/api/order/', orderRoutes);
 

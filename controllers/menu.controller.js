@@ -1,57 +1,126 @@
 const express = require('express');
-const menuSchema = require('../models/menu.model');
-//const UserSchema = require('../models/user.model');
+const Menu = require('../models/menu.model');
+const Shop = require('../models/shop.model');
 
-const showAllMenu = async (req , res) => {
-    const owner  =  req.body.owner ;
-    const allMenu= await menuSchema.find({});
-    res.send(allMenu);
-    res.status(201).json(allMenu);
-    
-}
+// add new menu
+const addMenu = asyncHandler(async (req , res ) => {
+    const { parentShop,
+            menuName,
+            category,
+            priceUnit,
+            img,
+            stockAmount,
+            stockStatus } = req.body;
 
-const addMenu = async (req , res ) => {
-    const { menuName , priceUnit , imgUrl ,stockAmount, parentStock } = req.body
+    const newMenu = await Menu.create({
+        parentshop : parentShop ,
+        menu : menuName,
+        category : category,
+        imgUrl : img,
+        priceUnit,
+        stockAmount : stockAmount,
+        stockStatus : stockStatus
+    });
 
-    const menu = await  menuSchema.create({
-        menuName : menuName ,
-        priceUnit : priceUnit ,
-        imgUrl  : imgUrl ,
-        stockAmount  : stockAmount , 
-        parentStock : parentStock 
+    // if create new menu successfully
+    if(newMenu){
+        const obj = newMenu._id;
+        Shop.findOneAndUpdate({ _id: parentShop }, 
+        { $push: { menu : obj } },function (error, success) {
+            if (error) {
+                console.log(error);
+            } else {
+                console.log(success);
+            }
+        });
+    }
+
+    res.status(201).json({newMenu});
+
+});
+
+// delete menu
+const deleteMenu  = asyncHandler(async (req , res) => {
+    const { parentShop } = req.body;
+    const menuID = await Menu.findById(req.params.id);
+
+    // if there is no menu which are looking for
+    if(!menuID){
+        res.status(404);
+        throw new Error("No menu which you are looking for");
+    }
+
+    if(menuID){
+        await menuID.remove();
+        await Shop.findOneAndUpdate({ _id: parentShop }, 
+            { $pull: { menu : menuID } }, function (err) {
+                if(err){
+                    console.log(err)
+                }
+            }
+        );
+        res.send("Menu is deleted.");
+    }
+});
+
+// edit stockAmount by menuID
+const editStockAmount = asyncHandler(async (req , res) => {
+    const menu = Menu.findById(req.params.id);
+    const { stockAmount } = req.body;
+
+    // if there is no menu
+    if(!menu){
+        res.status(404);
+        throw new Error("No menu which you are looking for");
+    }
+
+    // if there is a menu we're looking for
+    if(menu){
+        menu.stockAmount = stockAmount;
+
+        const updatedMenu = await menu.save();
+        res.status(201).json(updatedMenu);
+    } else {
+        res.status(404);
+        throw new Error("Something went wrong with updating.");
+    }
+});
+
+// query menu by category keyword
+const showByCategory = asyncHandler(async (req , res) => {
+    const { keyword } = req.params.keyword;
+    const filteredMenu = Menu.find({ category : keyword });
    
-    })
+    if(!filteredMenu){
+        res.status(404);
+        throw new Error("No menu which you are looking for");
+    }
 
-    console.log(menu) ;
+    if(filteredMenu){
+        res.status(201).json(filteredMenu);
+    }
+});
 
-}
+// get all of menus of that shop by shopID
+const getAllMenu = asyncHandler(async (req , res) => {
+    const parentShop = req.params.shopId;
+    const stock = await Menu.find({ parentShop : parentShop });
 
-const showByone = (req , res) => {
-    const id = req.params.id
-    const menu = menuSchema.findById(id, function (err, docs) {
-        if (err){
-            console.log(err);
-        }
-        else{
-            console.log("Result : ", docs);
-        }
-    })
-    res.status(201).json({menu}) ;
+    if(!stock){
+        res.status(404);
+        throw new Error("Maybe error occurs");
+    }
 
-}
+    if(stock){
+        res.status(201).json(stock);
+    }
 
-const deleteMenu =  (req , res )=> {
+});
 
-    const  id   = req.params.id
-    menuSchema.findByIdAndRemove(id, function (err, docs) {
-        if (err){
-            console.log(err)
-        }
-        else{
-            console.log("Removed Menu : ", docs);
-        }
-    })
-
-}
-
-module.exports = {showAllMenu , showByone, deleteMenu ,addMenu };
+module.exports = {
+    showByCategory, 
+    addMenu, 
+    deleteMenu, 
+    editStockAmount, 
+    getAllMenu 
+};
