@@ -36,7 +36,7 @@ const addMenu = asyncHandler(async (req , res ) => {
         });
     }
 
-    res.status(201).json({newMenu});
+    res.status(201).json(newMenu);
 
 });
 

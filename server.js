@@ -1,5 +1,6 @@
 const express = require('express');
 const dotenv = require('dotenv');
+const cors = require('cors');
 const connectDB = require('./config/connectDB');
 
 // Invoke dependencies
@@ -17,6 +18,7 @@ const orderRoutes = require('./routes/order.route');
 
 // Configuration
 app.use(express.json());
+app.use(cors())
 
 // Generate view at main directory
 app.get('/', (req, res) => {
