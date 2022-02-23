@@ -7,18 +7,25 @@ const Shop = require('../models/shop.model');
 const addMenu = asyncHandler(async (req , res ) => {
     const { parentShop,
             menuName,
-            category,
+            menuCategory,
             priceUnit,
-            img,
+            imgUrl,
             stockAmount,
             stockStatus } = req.body;
 
+    // check whether shop exists
+    const isThereAShop = await Shop.findById(parentShop);
+    if(!isThereAShop){
+        res.status(404);
+        throw new Error("Shop to add the menu does not exist.");
+    }
+
     const newMenu = await Menu.create({
-        parentshop : parentShop ,
-        menu : menuName,
-        category : category,
-        imgUrl : img,
-        priceUnit,
+        parentShop : parentShop,
+        menuName : menuName,
+        menuCategory : menuCategory,
+        imgUrl : imgUrl,
+        priceUnit : priceUnit,
         stockAmount : stockAmount,
         stockStatus : stockStatus
     });
@@ -26,7 +33,7 @@ const addMenu = asyncHandler(async (req , res ) => {
     // if create new menu successfully
     if(newMenu){
         const obj = newMenu._id;
-        Shop.findOneAndUpdate({ _id: parentShop }, 
+        Shop.findByIdAndUpdate(parentShop , 
         { $push: { menu : obj } },function (error, success) {
             if (error) {
                 console.log(error);
@@ -48,26 +55,23 @@ const deleteMenu  = asyncHandler(async (req , res) => {
     // if there is no menu which are looking for
     if(!menuID){
         res.status(404);
-        throw new Error("No menu which you are looking for");
+        throw new Error("No menu which you are looking for.");
     }
 
     if(menuID){
-        await menuID.remove();
-        await Shop.findOneAndUpdate({ _id: parentShop }, 
-            { $pull: { menu : menuID } }, function (err) {
-                if(err){
-                    console.log(err)
-                }
-            }
+        await Shop.findByIdAndUpdate(parentShop, 
+            { $pull: { menu : req.params.id } }, { new: true, useFindAndModify: false }
         );
+        await menuID.remove();
         res.send("Menu is deleted.");
     }
 });
 
 // edit stockAmount by menuID
 const editStockAmount = asyncHandler(async (req , res) => {
-    const menu = Menu.findById(req.params.id);
     const { stockAmount } = req.body;
+    const menu = await Menu.findById(req.params.id);
+
 
     // if there is no menu
     if(!menu){
@@ -89,8 +93,23 @@ const editStockAmount = asyncHandler(async (req , res) => {
 
 // query menu by category keyword
 const showByCategory = asyncHandler(async (req , res) => {
-    const { keyword } = req.params.keyword;
-    const filteredMenu = Menu.find({ category : keyword });
+    const keyword = req.body.menuCategory;
+    const shopID = req.params.id;
+    const filteredMenu = await Menu.find({ parentShop: shopID, menuCategory : keyword });
+
+    // authorizing that shop's employee
+    if(!await Shop.findById(shopID).where(
+        {
+            $or:[
+                { owner : req.user._id },
+                { manager : [req.user._id]},
+                { employee : [req.user._id]}
+            ]
+        }))
+    {
+        res.status(401);
+        throw new Error("You do not have a permission to see the data.");
+    }
    
     if(!filteredMenu){
         res.status(404);
@@ -105,15 +124,30 @@ const showByCategory = asyncHandler(async (req , res) => {
 // get all of menus of that shop by shopID
 const getAllMenu = asyncHandler(async (req , res) => {
     const parentShop = req.params.shopId;
-    const stock = await Menu.find({ parentShop : parentShop });
+    const allMenu = await Menu.find({ parentShop : parentShop });
 
-    if(!stock){
+    // authorizing that shop's employee
+    if(!await Shop.findById(parentShop).where(
+        {
+            $or:[
+                { owner : req.user._id },
+                { manager : [req.user._id]},
+                { employee : [req.user._id]}
+            ]
+        }))
+    {
+        res.status(400);
+        throw new Error("Authorization failed.")
+    }
+
+    // there is some error occurs
+    if(!allMenu){
         res.status(404);
         throw new Error("Maybe error occurs");
     }
 
-    if(stock){
-        res.status(201).json(stock);
+    if(allMenu){
+        res.status(201).json(allMenu);
     }
 
 });

@@ -34,6 +34,8 @@ const ShopSchema = new Schema({
             ref : 'order',
         }
     ]
+},{
+    timestamps : true,
 });
 
 module.exports  = Shop = mongoose.model('shop', ShopSchema);

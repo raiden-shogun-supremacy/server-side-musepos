@@ -27,6 +27,6 @@ router.route('/delete-menu/:id').delete(protect, deleteMenu);
 router.route('/edit-qty/:id').put(protect, editStockAmount);
 
 // query by filter keyword
-router.route('/menu-type/:keyword').get(protect, showByCategory);
+router.route('/menu-type/:id').get(protect, showByCategory);
 
 module.exports = router;

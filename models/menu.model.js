@@ -28,8 +28,11 @@ const MenuSchema = new Schema({
     },
     parentShop : {
         type : mongoose.Schema.Types.ObjectId,
-        ref : 'shop'
+        ref : 'shop',
+        required : true
     }
+},{
+    timestamps : true
 });
 
 module.exports = Menu = mongoose.model('menu', MenuSchema);
