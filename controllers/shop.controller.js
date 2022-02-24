@@ -61,7 +61,6 @@ const createShop = asyncHandler(async (req, res) => {
             console.log(success);
         }
     });
-    
 
     if(newShop) {
         res.status(201).json({

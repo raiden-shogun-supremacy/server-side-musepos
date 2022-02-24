@@ -21,7 +21,8 @@ const UserSchema = new Schema({
             type : mongoose.Schema.Types.ObjectId,
             ref : 'shop',
         }
-    ]
+    ],
+
 },{
     timestamps : true,
 });
