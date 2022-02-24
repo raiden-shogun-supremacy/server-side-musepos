@@ -38,28 +38,22 @@ const getCurrentShop = asyncHandler(async (req, res) => {
 
 // create a new shop
 const createShop = asyncHandler(async (req, res) => {
-    const { shopName, owner } = req.body;
+    const { shopName } = req.body;
     // if user did not provide shop's name
     if (!shopName) {
         res.status(400);
         throw new Error ("Shop name is not provided!");
     }
 
-    // if there is something wrong with authorization
-    if (!owner) {
-        res.status(400);
-        throw new Error("Token failed.");
-    }
-
     // if everything is fine, then create the shop.
     const newShop = await Shop.create({
         shopName : shopName,
-        owner : owner,
+        owner : req.user._id,
     });
 
     // add shop to shopParticipate
     const obj = newShop._id;
-    User.findOneAndUpdate({ _id: owner }, 
+    User.findOneAndUpdate({ _id: req.user._id }, 
     { $push: { shopParticipate : obj } },function (error, success) {
         if (error) {
             console.log(error);

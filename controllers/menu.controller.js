@@ -91,6 +91,26 @@ const editStockAmount = asyncHandler(async (req , res) => {
     }
 });
 
+// get menu by menuID
+const getMenuById = asyncHandler(async (req , res) => {
+    const menu = await Menu.findById(req.params.menuId);
+
+
+    // if there is no menu
+    if(!menu){
+        res.status(404);
+        throw new Error("No menu which you are looking for");
+    }
+
+    // if there is a menu we're looking for
+    if(menu){
+        res.status(201).json(menu);
+    } else {
+        res.status(404);
+        throw new Error("Something went wrong with updating.");
+    }
+});
+
 // query menu by category keyword
 const showByCategory = asyncHandler(async (req , res) => {
     const keyword = req.body.menuCategory;
@@ -157,5 +177,6 @@ module.exports = {
     addMenu, 
     deleteMenu, 
     editStockAmount, 
-    getAllMenu 
+    getAllMenu,
+    getMenuById
 };
