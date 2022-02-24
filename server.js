@@ -17,7 +17,8 @@ const menuRoutes = require('./routes/menu.route');
 const orderRoutes = require('./routes/order.route');
 
 // Configuration
-app.use(express.json());
+app.use(express.json({limit: "30mb",extended:true}));
+app.use(express.urlencoded({limit: "30mb",extended:true}));
 app.use(cors());
 
 // Generate view at main directory

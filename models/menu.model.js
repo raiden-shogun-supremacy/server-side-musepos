@@ -10,10 +10,7 @@ const MenuSchema = new Schema({
         type : Number,
         required : true 
     } ,
-    imgUrl : {
-        type : String , 
-        required : true 
-    } ,
+    imgUrl :  String , 
     menuCategory : {
         type : String ,
         require : true
