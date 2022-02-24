@@ -11,11 +11,15 @@ const {
     addMenu, 
     deleteMenu, 
     editStockAmount, 
-    getAllMenu
+    getAllMenu,
+    getMenuById
 } = require('../controllers/menu.controller');
 
 // get all menu by shopID
 router.route('/:shopId').get(protect, getAllMenu);
+
+// get menu by menuID
+router.route('/get-menu/:menuId').get(protect, getMenuById);
 
 // add a new menu
 router.route('/add-menu').post(protect, addMenu);

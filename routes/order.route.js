@@ -3,14 +3,25 @@ const router = express.Router();
 
 const protect = require('../middlewares/authorization.middleware');
 
-const { newOrder } = require('../controllers/order.controller');
-const { deleteOrder } = require('../controllers/order.controller');
-const { showAllOrder } = require('../controllers/order.controller');
-const { getCurrentOrder } = require('../controllers/order.controller');
+const { createOrder,
+        deleteOrder,
+        getAllOrder,
+        checkBill,
+        getCurrentOrder } = require('../controllers/order.controller');
 
-router.route('/neworder').post(newOrder, protect);
-router.route('/delete-order/:id').delete(deleteOrder, protect);
-router.route('/show-all-order').get(showAllOrder, protect);
-router.route('/order-now/:id').get(getCurrentOrder, protect);
+// get all order of that shop
+router.route('/:shopId').get(protect, getAllOrder);
+
+// create a new order
+router.route('/create-order').post(protect, createOrder);
+
+// delete-order by orderID
+router.route('/delete-order/:id').delete(protect, deleteOrder);
+
+// edit order status
+router.route('/check-bill/:id').put(protect, checkBill);
+
+// get current order by orderID
+router.route('/current-order/:id').get(protect, getCurrentOrder);
 
 module.exports = router;

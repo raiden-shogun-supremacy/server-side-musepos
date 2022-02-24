@@ -18,7 +18,7 @@ const orderRoutes = require('./routes/order.route');
 
 // Configuration
 app.use(express.json());
-app.use(cors())
+app.use(cors());
 
 // Generate view at main directory
 app.get('/', (req, res) => {
