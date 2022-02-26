@@ -3,20 +3,20 @@ const Schema = mongoose.Schema;
 
 const orderSchema = new Schema({
     orderList : [
-        // {
-        //     menuID : {
-        //         type : mongoose.Schema.Types.ObjectId,
-        //         ref : 'menu',
-        //     },
-        //     menuName : {
-        //         type : String,
-        //         required : true
-        //     },
-        //     orderAmount : {
-        //         type : Number,
-        //         required : true
-        //     }
-        // }
+        {
+            menuID : {
+                type : mongoose.Schema.Types.ObjectId,
+                ref : 'menu',
+            },
+            menuName : {
+                type : String,
+                required : true
+            },
+            orderAmount : {
+                type : Number,
+                required : true
+            }
+        }
     ],
     parentShop : {
         type : mongoose.Schema.Types.ObjectId,
